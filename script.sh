@@ -107,100 +107,100 @@ echo $green_color"[SUCCESS]";
 echo $green_color"[######################################]";
 
 echo $no_color"CREATING NGINX FILE FOR $domain";
-sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default >> $script_log_file 2>/dev/null
-sudo touch /etc/nginx/sites-available/$domain >> $script_log_file 2>/dev/null
-sudo bash -c "echo 'server {
-    listen 80;
-    listen [::]:80;
-    root /var/www/html/'$domain'/public;
-    index index.php index.html index.htm index.nginx-debian.html;
-    server_name '$domain' www.'$domain';
-    location / {
-        try_files \$uri \$uri/ /index.php?\$query_string;
-    }
-    location ~ \.php$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
-    }
-    location ~ /\.ht {
-            deny all;
-    }
-}' > /etc/nginx/sites-available/$domain" >> $script_log_file 2>/dev/null
-ln -s /etc/nginx/sites-available/$domain /etc/nginx/sites-enabled/ >> $script_log_file 2>/dev/null
-sudo mkdir /var/www/html/$domain >> $script_log_file 2>/dev/null
-sudo mkdir /var/www/html/$domain/public >> $script_log_file 2>/dev/null
-sudo bash -c "echo  '<h1 style=\"color:#0194fe\">Welcome</h1><h4 style=\"color:#0194fe\">$domain</h4>' > /var/www/html/$domain/public/index.php" >> $script_log_file 2>/dev/null
-echo $green_color"[SUCCESS]";
+# sudo rm -rf /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default >> $script_log_file 2>/dev/null
+# sudo touch /etc/nginx/sites-available/$domain >> $script_log_file 2>/dev/null
+# sudo bash -c "echo 'server {
+#     listen 80;
+#     listen [::]:80;
+#     root /var/www/html/'$domain'/public;
+#     index index.php index.html index.htm index.nginx-debian.html;
+#     server_name '$domain' www.'$domain';
+#     location / {
+#         try_files \$uri \$uri/ /index.php?\$query_string;
+#     }
+#     location ~ \.php$ {
+#         include snippets/fastcgi-php.conf;
+#         fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+#     }
+#     location ~ /\.ht {
+#             deny all;
+#     }
+# }' > /etc/nginx/sites-available/$domain" >> $script_log_file 2>/dev/null
+# ln -s /etc/nginx/sites-available/$domain /etc/nginx/sites-enabled/ >> $script_log_file 2>/dev/null
+# sudo mkdir /var/www/html/$domain >> $script_log_file 2>/dev/null
+# sudo mkdir /var/www/html/$domain/public >> $script_log_file 2>/dev/null
+# sudo bash -c "echo  '<h1 style=\"color:#0194fe\">Welcome</h1><h4 style=\"color:#0194fe\">$domain</h4>' > /var/www/html/$domain/public/index.php" >> $script_log_file 2>/dev/null
+# echo $green_color"[SUCCESS]";
 echo $green_color"[######################################]";
 
 
 echo $no_color"RESTARTING NGINX";
-sudo pkill -f nginx & wait $! >> $script_log_file 2>/dev/null
-sudo systemctl start nginx >> $script_log_file 2>/dev/null
-sudo service nginx restart >> $script_log_file 2>/dev/null
-echo $green_color"[SUCCESS]";
+# sudo pkill -f nginx & wait $! >> $script_log_file 2>/dev/null
+# sudo systemctl start nginx >> $script_log_file 2>/dev/null
+# sudo service nginx restart >> $script_log_file 2>/dev/null
+# echo $green_color"[SUCCESS]";
 echo $green_color"[######################################]";
 
 
 
 
 echo $no_color"GENERATING SSL CERTIFICATE FOR $domain"
-certbot --nginx -d $domain -d www.$domain --non-interactive --agree-tos -m admin@$domain >> $script_log_file 2>/dev/null
-rm -rf /etc/nginx/sites-available/$domain >> $script_log_file 2>/dev/null
-sudo touch /etc/nginx/sites-available/$domain >> $script_log_file 2>/dev/null
+# certbot --nginx -d $domain -d www.$domain --non-interactive --agree-tos -m admin@$domain >> $script_log_file 2>/dev/null
+# rm -rf /etc/nginx/sites-available/$domain >> $script_log_file 2>/dev/null
+# sudo touch /etc/nginx/sites-available/$domain >> $script_log_file 2>/dev/null
 
-sudo bash -c "echo 'server {
-    listen 80;
-    #access_log off;
-    root /var/www/html/'$domain'/public;
-    index index.php index.html index.htm index.nginx-debian.html;
-    client_max_body_size 1000M;
-    fastcgi_read_timeout 8600;
-    proxy_cache_valid 200 365d;
-    if (!-d \$request_filename) {
-      rewrite ^/(.+)/$ /\$1 permanent;
-    }
-    if (\$request_uri ~* "\/\/") {
-      rewrite ^/(.*) /\$1 permanent;
-    }
-    location ~ \.(env|log|htaccess)\$ {
-        deny all;
-    }
-    location ~*\.(?:js|jpg|jpeg|gif|png|css|tgz|gz|rar|bz2|doc|pdf|ppt|tar|wav|bmp|rtf|swf|ico|flv|txt|woff|woff2|svg|mp3|jpe?g,eot|ttf|svg)\$ {
-        access_log off;
-        expires 360d;
-        add_header Access-Control-Allow-Origin *;
-        add_header Pragma public;
-        add_header Cache-Control \"public\";
-        add_header Vary Accept-Encoding; 
-        try_files \$uri \$uri/ /index.php?\$query_string;
-    }
-    location / {
-        add_header Access-Control-Allow-Origin *;
-        if (\$request_uri ~* \"^(.*/)index\.php(/?)(.*)\") {
-              return 301 \$1\$3;
-        }
-        if (\$host ~* ^(www)) {
-            rewrite ^/(.*)\$ https://'$domain'/\$1 permanent;
-        }
-        if (\$scheme = http) {
-            return 301 https://'$domain'\$request_uri;
-        }
-        try_files \$uri \$uri/ /index.php?\$query_string;
-    }
+# sudo bash -c "echo 'server {
+#     listen 80;
+#     #access_log off;
+#     root /var/www/html/'$domain'/public;
+#     index index.php index.html index.htm index.nginx-debian.html;
+#     client_max_body_size 1000M;
+#     fastcgi_read_timeout 8600;
+#     proxy_cache_valid 200 365d;
+#     if (!-d \$request_filename) {
+#       rewrite ^/(.+)/$ /\$1 permanent;
+#     }
+#     if (\$request_uri ~* "\/\/") {
+#       rewrite ^/(.*) /\$1 permanent;
+#     }
+#     location ~ \.(env|log|htaccess)\$ {
+#         deny all;
+#     }
+#     location ~*\.(?:js|jpg|jpeg|gif|png|css|tgz|gz|rar|bz2|doc|pdf|ppt|tar|wav|bmp|rtf|swf|ico|flv|txt|woff|woff2|svg|mp3|jpe?g,eot|ttf|svg)\$ {
+#         access_log off;
+#         expires 360d;
+#         add_header Access-Control-Allow-Origin *;
+#         add_header Pragma public;
+#         add_header Cache-Control \"public\";
+#         add_header Vary Accept-Encoding; 
+#         try_files \$uri \$uri/ /index.php?\$query_string;
+#     }
+#     location / {
+#         add_header Access-Control-Allow-Origin *;
+#         if (\$request_uri ~* \"^(.*/)index\.php(/?)(.*)\") {
+#               return 301 \$1\$3;
+#         }
+#         if (\$host ~* ^(www)) {
+#             rewrite ^/(.*)\$ https://'$domain'/\$1 permanent;
+#         }
+#         if (\$scheme = http) {
+#             return 301 https://'$domain'\$request_uri;
+#         }
+#         try_files \$uri \$uri/ /index.php?\$query_string;
+#     }
 
-    location ~ \.php\$ {
-        include snippets/fastcgi-php.conf;
-        fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
-    }
-   listen 443 ssl; # managed by Certbot
-   server_name '$domain' www.'$domain';
-   ssl_certificate /etc/letsencrypt/live/'$domain'/fullchain.pem; # managed by Certbot
-   ssl_certificate_key /etc/letsencrypt/live/'$domain'/privkey.pem; # managed by Certbot
-   include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-   ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-}' > /etc/nginx/sites-available/$domain" >> $script_log_file 2>/dev/null
-echo $green_color"[SUCCESS]";
+#     location ~ \.php\$ {
+#         include snippets/fastcgi-php.conf;
+#         fastcgi_pass unix:/var/run/php/php8.2-fpm.sock;
+#     }
+#    listen 443 ssl; # managed by Certbot
+#    server_name '$domain' www.'$domain';
+#    ssl_certificate /etc/letsencrypt/live/'$domain'/fullchain.pem; # managed by Certbot
+#    ssl_certificate_key /etc/letsencrypt/live/'$domain'/privkey.pem; # managed by Certbot
+#    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+#    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+# }' > /etc/nginx/sites-available/$domain" >> $script_log_file 2>/dev/null
+# echo $green_color"[SUCCESS]";
 echo $green_color"[######################################]";
 
 echo $no_color"RESTARTING NGINX";
